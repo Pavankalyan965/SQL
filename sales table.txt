@@ -1,0 +1,297 @@
+
+select * from sales
+create table sales(snum int primary key, sname varchar(30) not null, city varchar(30) not null, comm decimal(10,2) not null)
+INSERT INTO sales VALUES (1001, 'Peel', 'London', 0.12);
+INSERT INTO sales VALUES (1002, 'Serres', 'San_Jose', 0.13);
+INSERT INTO sales VALUES (1004, 'Motika', 'London', 0.11);
+INSERT INTO sales VALUES (1007, 'Rifkin', 'Barcelona', 0.15);
+INSERT INTO sales VALUES (1003, 'AxelRod', 'Newyork', 0.10);
+INSERT INTO sales VALUES (1005, 'Fran', 'London', 0.26);
+
+
+select * from customer
+INSERT INTO customer VALUES (2001, 'Hoffman', 'London',100, 1001)
+INSERT INTO customer VALUES (2002, 'Giovanni', 'Rome',200, 1002)
+INSERT INTO customer VALUES (2003, 'Liu', 'San Jose',200, 1003)
+INSERT INTO customer VALUES (2004, 'Grass', 'Berlin',300, 1004)
+INSERT INTO customer VALUES (2006, 'Clemens', 'London',100, 1005)
+INSERT INTO customer VALUES (2008, 'Cisneros', 'San Jose',300, 1006)
+INSERT INTO customer VALUES (2009, 'Cisneros', 'San Jose',300, 1006)
+INSERT INTO customer VALUES (2010, 'Cisneros', 'San Jose',300, 1002)
+
+
+create table orders(onum int primary key, amt decimal(7,2) not null, odate date not null, cnum int not null, foreign key(cnum) references customer(cnum))
+select * from orders
+insert into orders values(3001, 18.69, '1996-03-10', 2008)
+insert into orders values(3003, 767.19, '1996-03-10', 2001)
+insert into orders values(3002, 1900.10, '1996-03-10', 2008)
+insert into orders values(3005, 5160.45, '1996-03-10', 2003)
+insert into orders values(3006, 1098.16, '1996-03-10', 2008)
+insert into orders values(3009, 1713.23, '1996-04-10', 2002)
+insert into orders values(3007, 75.75, '1996-04-10', 2002)
+insert into orders values(3008, 4723.00, '1996-05-10', 2006)
+insert into orders values(3010, 1309.95, '1996-06-10', 2004)
+insert into orders values(3011, 9891.88, '1996-06-10', 2006)
+
+
+
+
+MY QUERIES:
+1.select * from sales
+
+2.select cname,rating as highrating from customer where rating='100'
+3.select * from customer where city=null
+4.select s.sname,o.odate,max(o.amt) as t from sales s join customer c on s.snum=c.snum join orders o on c.cnum=o.cnum group by s.sname,o.odate 
+
+5.select * from orders order by cnum desc
+
+6.select s.sname,o.onum from sales s join customer c on s.snum=c.snum join orders o on c.cnum=o.cnum group by s.sname,o.onum
+
+7.select s.sname,c.cname from sales s join customer c on s.snum=c.snum
+
+8.select s.sname,s.snum from sales s join customer c on s.snum=c.snum group by s.snum,s.sname having count(c.snum)>1
+
+9. select s.sname,count(o.onum) as count from sales s join customer c on s.snum=c.snum join orders o on c.cnum=o.cnum group by s.sname order by count desc
+
+ select * from customer group by city having count(cname)>=1 and city='San Jose' 
+
+11.select s.sname,c.cname,c.city as ccity,s.city as scity from sales s join customer c on s.snum=c.snum group by s.sname,c.cname,c.city,s.city 
+
+12.select s.sname,max(amt) as highest from sales s join customer c on s.snum=c.snum join orders o on c.cnum=o.cnum group by s.sname order by highest desc
+
+13.select c.cname,rating from sales s join customer c on s.snum=c.snum where c.city='San Jose' and rating>200 
+
+14. select sname,comm from sales where city='London' group by sname,comm
+
+15. select s.sname,o.onum from sales s join customer c on s.snum=c.snum join orders o on c.cnum=o.cnum where sname='motika' group by s.sname,o.onum 
+
+16. select c.cname,o.onum,o.odate from sales s join customer c on s.snum=c.snum join orders o on c.cnum=o.cnum where odate='1996-03-10' group by c.cname,o.onum,o.odate
+
+select * from orders where odate='1996-03-10'
+
+17. select o.odate,sum(amt) as total from sales s join customer c on s.snum=c.snum join orders o on c.cnum=o.cnum where amt>2000 group by o.odate
+
+18. select onum,amt from orders where amt>(select min(amt) from orders where odate='1996-06-10')
+
+
+19. 
+
+20. select cname,rating from customer  group by rating,cname having rating=rating 
+
+
+21. select c.cname,s.snum,c.cnum,s.sname from sales s join customer c on s.snum=c.snum where c.snum>1000 and s.sname='Serres'
+
+select a.cnum,a.cname,b.snum,b.sname from customer a,sales b where b.snum+1000=a.cnum;
+
+22. select sname,comm*100 from sales
+
+23.select s.sname,o.odate,max(amt) from sales s join customer c on s.snum=c.snum join orders o on c.cnum=o.cnum where amt>='3000' group by s.sname,o.odate
+
+select b.sname,c.odate,c.onum,c.amt from customer a,sales b,orders c where a.snum=b.snum and a.cnum=b.cnum and amt>=3000;
+
+24. select s.sname,o.odate,max(amt) from sales s join customer c on s.snum=c.snum join orders o on c.cnum=o.cnum where odate='1996-03-10' group by s.sname,o.odate
+
+25. select c.cname,s.sname from sales s join customer c on s.snum=c.snum where s.sname='Serres' 
+
+26.select * from customer where rating>'200'
+
+27. select count(distinct s.snum) from sales s join customer c on s.snum=c.snum join orders o on c.cnum=o.cnum 
+
+28. select cname,comm from sales s join customer c on s.snum=c.snum  where comm>0.12 group by cname,comm
+
+29. select s.sname,count(c.cname) as t from sales s join customer c on s.snum=c.snum group by s.sname having count(c.cname)>1
+
+30. select s.sname,c.cname from sales s join customer c on s.snum=c.snum where s.city=c.city
+
+31. select * from sales where sname like'P__l'
+
+32. select c.cname,o.onum from customer c join orders o on c.cnum=o.cnum where c.cname=(select distinct cname from customer where cname='Cisneros')
+
+33. select s.sname,max(amt) as max from sales s join customer c on s.snum=c.snum join orders o on c.cnum=o.cnum where s.sname='Serres' or s.sname='Rifkin' group by s.sname
+
+34.select snum,sname,comm,city from sales
+
+35. select cname from customer where cname like '[A-G]%'
+
+36.select * from orders having amt>10
+
+37. select onum,amt from orders where amt>(select avg(amt) from orders)
+
+38. select cnum,cname,rating from customer where rating=(select max(distinct rating) from customer)
+
+39. select odate,day(odate) as dat,sum(amt) as sum from orders group by odate order by sum desc
+
+40. select cname,rating,city from customer where city='San Jose'
+
+41. select o.onum,o.amt from customer c join orders o on c.cnum=o.cnum where amt<(select max(amt) as max from customer c join orders o on c.cnum=o.cnum where city='San Jose')
+
+42. select onum,amt from customer c join orders o on c.cnum=o.cnum where amt>(select avg(amt) as avg from customer c join orders o on c.cnum=o.cnum )
+
+43. select city,max(rating) from customer group by city
+
+44. select o.onum,o.amt,s.comm,rating from sales s join customer c on s.snum=c.snum join orders o on c.cnum=o.cnum where rating>100
+
+45. select count(*) as number from customer where rating>(select avg(rating) from customer where city='San Jose')
+
+46. 
+
+47. select sname from sales where city='Barcelona' or city='London'
+
+48. select sname,count(c.cname) as count from sales s join customer c on s.snum=c.snum group by sname having count(*)=1 
+
+ select s.sname,c.cname,count(s.sname) as t from customer s join customer c on s.snum=c.snum group by s.sname having t=1 
+
+50. select onum,amt from orders where amt>1000
+
+51. select o.onum,c.cname from customer c join orders o on c.cnum=o.cnum 
+
+52. select s.sname,s.snum,c.cname from sales s join customer c on s.snum=c.snum where c.city!=s.city
+
+53. select c.cname,rating from sales s join customer c on s.snum=c.snum where rating>=(select max(rating) from customer where s.sname='Serres')
+
+54. select onum,odate from orders where odate='1996-03-10' or odate='1996-04-10'
+select onum,odate from orders where odate betweeen '1996-03-10' or '1996-04-10' 
+
+55. 
+
+56. select cname,city from customer where rating>(select max(rating) from customer where city='Rome')
+
+57. select cname,rating,city from customer where city='Rome' and rating>=100 or city!='Rome' and rating>100
+
+58. select * from sales s join customer c on s.snum=c.snum where s.snum='1001'
+
+59. select s.sname,sum(o.amt) as amt from sales s join customer c on s.snum=c.snum join orders o on c.cnum=o.cnum group by s.sname having sum(amt)>(select max(amt) from orders) 
+
+select * from orders where amt is null and onum is not null
+
+61. select s.sname,c.cname,rating from sales s join customer c on s.snum=c.snum where rating<200 group by s.sname,c.cname,rating order by s.sname
+
+62. select sname,comm from sales 
+
+select cname,city from customer where rating='100'
+
+64. select s.sname,c.cname from sales s join customer c on s.snum=c.snum order by c.cname 
+
+65. select c.cname,c.rating from customer c join orders o on c.cnum=o.cnum group by c.cname,rating having c.rating>(select avg(c.rating) from customer c join orders o on c.cnum=o.cnum) 
+
+66. select sum(amt) as addition from orders
+
+67. select onum,odate,amt from orders
+
+68. select count(rating) as num from customer where rating is not null
+
+69. select o.onum,s.sname,c.cname from sales s join customer c on s.snum=c.snum join orders o on c.cnum=o.cnum
+
+70. select comm,sname from sales where city='London'
+
+71. 
+
+72.
+
+73.select s.sname,c.cname from sales s join customer c on s.snum=c.snum where s.sname='Peel' or s.sname='Motika'
+
+74. select odate,count(distinct s.sname) from sales s join customer c on s.snum=c.snum join orders o on c.cnum=o.cnum group by o.odate 
+
+75. select s.sname,c.city,o.onum from sales s join customer c on s.snum=c.snum join orders o on c.cnum=o.cnum where c.city='London' group by s.sname,c.city,o.onum
+
+76. select o.onum,c.cname,c.city as ccity ,s.city as scity,s.sname from sales s join customer c on s.snum=c.snum join orders o on c.cnum=o.cnum where s.city!=c.city
+
+77. select s.sname,c.cname,o.onum,count(o.onum) as t from sales s join customer c on s.snum=c.snum join orders o on c.cnum=o.cnum group by s.sname,c.cname,o.onum having count(o.onum)>1
+
+ select s.sname,c.cname,o.onum from sales s join customer c on s.snum=c.snum join orders o on c.cnum=o.cnum group by s.sname,c.cname,o.onum having count(c.cname)>1
+
+79. select cname from customer where cname like 'C%'
+
+select 'for the city'+city + 'highest rating is ' +rating from customer 
+
+81. select s.snum,o.onum from sales s join customer c on s.snum=c.snum join orders o on c.cnum=o.cnum 
+
+82. select rating,cname,cnum from customer order by rating desc
+
+83.select sname,snum,avg(comm) as avg from sales group by snum,sname
+
+84. select c.cname,s.sname,o.onum from sales s join customer c on s.snum=c.snum join orders o on c.cnum=o.cnum where cname='Hoffman' or c.cnum=o.onum group by c.cname,s.sname,o.onum
+
+85. select sname,comm from sales where comm between 0.10 and 0.12
+
+86. select sname,comm,city from sales where comm>0.10 and city='London'
+
+87. select * from customer c join orders o on c.cnum=o.cnum where amt<1000 and odate!='1996-03-10' and c.cnum!=2003
+
+88. select cname,min(amt) as min from customer c join orders o on c.cnum=o.cnum group by cname
+
+89. select cname from customer where cname like 'G%'
+
+90. select count(distinct city) as t  from customer 
+
+91. select avg(amt) from orders
+
+92. select * from sales s join customer c on s.snum=c.snum join orders o on c.cnum=o.cnum where o.odate!='1996-03-10' and s.snum<1006 and o.amt>=1500
+
+93. select cname from customer where city!='San Jose' and rating>200
+
+94. select snum,sname,city,comm from sales where comm>0.12 and comm<0.14
+
+95. select * from sales s join customer c on s.snum=c.snum join orders o on c.cnum=o.cnum where o.odate!='1996-03-10' and s.snum<1002 or o.odate!='1996-03-10' and o.amt<2000
+
+96. select distinct s.sname from sales s join customer c on s.snum=c.snum where s.city!=c.city
+
+97. select s.sname,s.comm from sales s join customer c on s.snum=c.snum where s.comm>0.11 and c.rating<250
+
+select sname,city from sales where city=city
+
+99. select sname, sum(comm) as commission from sales group by sname
+
+100. select c.cname,max(rating) as max,count(o.onum) as ord from customer c join orders o on c.cnum=o.cnum group by c.cname,rating order by rating desc
+
+
+101. select c.cname,rating,sum(amt) as sum from customer c join orders o on c.cnum=o.cnum group by c.cname,rating,amt order by rating desc
+
+102. select cname,rating from customer group by cname,rating order by rating desc
+
+103. select c.cname,o.odate,onum from customer c join orders o on c.cnum=o.cnum where c.cname='Hoffman'
+
+104. select sname,comm from sales 
+
+105. select s.sname,o.onum,o.odate from sales s join customer c on s.snum=c.snum join orders o on c.cnum=o.cnum where odate not between '1996-03-10' and '1996-05-10'
+
+106. select count(snum) from sales
+
+ 107. select count(c.cnum) as count from customer c join orders o on c.cnum=o.cnum  
+
+108. select s.sname,o.odate,max(amt) as max from sales s join customer c on s.snum=c.snum join orders o on c.cnum=o.cnum group by s.sname,o.odate,amt
+
+109. select s.sname,sum(amt) as best from sales s join customer c on s.snum=c.snum join orders o on c.cnum=o.cnum group by s.sname
+
+110. select c.cname,min(amt) as worst from sales s join customer c on s.snum=c.snum join orders o on c.cnum=o.cnum group by c.cname order by worst
+
+select s.sname,c.cname,o.amt from  sales s join customer c on s.snum=c.snum join orders o on c.cnum=o.cnum where o.amt<=200 and s.sname='Serres' or s.sname='Peel'
+
+select cname,rating from customer order by rating
+
+113. select onum,odate,amt from orders where amt>(select avg(amt) from orders)
+
+114. select c.cname,o.onum,o.amt from customer c join orders o on c.cnum=o.cnum where o.amt>(select avg(amt) from orders)
+
+115. select cname,rating from customer where rating>(select avg(rating) from customer)
+
+116. select s.sname,sum(amt) as sum from  sales s join customer c on s.snum=c.snum join orders o on c.cnum=o.cnum group by s.sname having sum(amt)>(select max(amt) from orders)
+
+117. select s.sname,s.snum,count(c.cnum) as count from  sales s join customer c on s.snum=c.snum group by s.sname,s.snum having count(c.cnum)>1
+
+select s.sname,s.snum from  sales s join customer c on s.snum=c.snum where s.city!=c.city
+
+119. select c.cname,sum(o.amt) as min from customer c join orders o on c.cnum=o.cnum group by c.cname order by min
+
+120. select s.sname,c.cname,c.city from sales s join customer c on s.snum=c.snum where c.city='Berlin'
+
+121. select sname,comm from sales
+
+122 
+
+ select o.odate,o.amt,s.sname,s.city, max( o.amt) as max from  sales s join customer c on s.snum=c.snum join orders o on c.cnum=o.cnum group by o.odate,o.amt,s.sname,s.city
+
+124 select s.sname,min(o.amt) as amt from sales s join customer c on s.snum=c.snum join orders o on c.cnum=o.cnum group by s.sname
+
+
+125. select sum(amt) as total from orders 

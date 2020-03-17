@@ -1,0 +1,223 @@
+TRANSACTIONS:
+
+begin tran
+update B set marks=61 where name='Pavan'
+rollback tran
+
+begin tran
+delete from B where name='Pavan'
+rollback tran
+
+begin tran
+delete from B where name='Karthik'
+rollback tran
+
+begin tran
+update B set marks=87 where name='rajesh'
+commit tran
+rollback tran
+
+begin tran
+save transaction s1
+update B set marks=100 where name='unknown'
+save transaction s2
+update B set marks=52 where name='charam'
+save transaction s3
+update B set marks=63 where name='manoj'
+rollback transaction s2
+
+
+select * from sbi
+begin tran
+update sbi set amt=20000 where amt=10000
+commit tran
+rollback tran
+
+select * from icici
+begin tran 
+delete from icici where aid=2002
+commit tran
+rollback tran
+
+begin tran
+save transaction s7
+update sbi set amt=35000 where aid=1001
+save transaction s8
+update sbi set amt=26000 where aid=1002
+save transaction s9
+update icici set amt=34100 where aid=2001
+commit tran
+rollback transaction 
+
+
+
+PROCEDURES:
+
+create procedure p10 as 
+begin
+select * from stu where name like 'aaa';
+select * from stu where s1=34 or s2=56
+select * from B where marks between 50 and 80
+end;
+execute p10
+
+alter procedure p1 as
+begin
+select * from stu where s1=34 or s2=56
+end
+exec p1
+
+create proc p2(@city as varchar(20)) as 
+begin
+select * from B where city=@city
+end
+exec p2 'hyd'
+exec p2 'bglr'
+
+create proc p5(@onum as int) as 
+begin
+select * from orders where onum=@onum
+end
+
+exec p5 3005
+
+
+
+
+create proc p6(@onum as int) as 
+begin
+select * from orders where onum=@onum
+end
+exec p6 3004
+
+
+drop proc p4
+create proc p1(@snum as int) as
+begin
+select s.snum,s.sname,c.cnum,c.cname,o.onum,o.amt from sales s inner join customer c on s.snum=c.snum join orders o on c.cnum=o.cnum where s.snum=@snum;
+end
+exec p1 1001
+
+select * from orders
+create proc p2(@onum as int) as 
+begin
+select * from orders where onum=@onum
+end
+exec p2 3004
+
+create proc p4(@marks as int, @city as varchar(20)) as
+begin
+select * from A where marks=@marks or city=@city
+end
+exec p4 75,'hyd'
+exec p4 76, 'hyd'
+exec p4 92,'bglr'
+
+create proc p8(@amt as decimal,@said as int,@daid as int) as
+begin
+update sbi set amt=amt-20000 where aid=@said
+update icici set amt=amt+20000 where aid=@daid
+end
+exec p8 20000,1002,2003
+
+
+select * from sbi
+select * from icici
+
+grant select on sbi to pavankalyan
+grant select,update,delete on sbi to pavankalyan
+revoke select on sbi to pavankalyan
+
+
+TASK:
+create proc p2(@x as int) as  
+begin
+update country set age=age-2 
+select count(age) as voters from country where age>=18
+end;
+
+exec p1 2
+rollback 
+
+1.4
+
+create proc p2(@x as int) as
+begin
+select count(age) as voters from country where age
+end;
+
+select count(age) as count from country where age<18
+
+select count(age) from country where age >18 and (select age from country where age in(select age+2 from country where age in(select age from country where age<18)))
+
+select count(age) from country where age between 18 and 19
+
+
+create proc p6(@x as int) as
+begin
+select count(age) from country where age in(select age from country where  age=age+@x)
+end;
+exec p6 3
+
+select * from country
+
+1.1.1 select edu,gender,count(edu) as count from country group by edu,gender order by edu 
+
+1.1.2 select edu,count(edu) as count from country where works>0 group by edu
+
+select gender,count(gender) from country group by gender 
+
+select avg(count(gender)) from country where gender in(select count(gender) as count from country group by gender) 
+
+
+2.1.1
+create proc pension(@p as int) as
+begin
+select count(age)*3000 as pension from country where age<60 and age+@p>=60
+end;
+exec pension 3
+select count(age) from country where age between 57 and 59
+
+2.1.2
+select parents,count(parents) as orphans from country group by parents having parents!=' Both parents present'
+
+2.1.3
+select count(gender) from country where gender=' Female' and works>0 and maritalstatus in(' Widowed',' Divorced')
+
+
+2.1.4
+create proc voters(@x as int) as
+begin
+select count(age) as voters from country where age<18 and age+@x>=18
+end
+exec voters 2
+
+
+2.1.5
+create proc seniors(@x as int) as 
+begin
+select count(age) from country where age<60 and age+@x>=60
+end
+exec seniors 5
+
+
+3.1
+select tax,sum(income) as total from country group by tax
+
+3.2
+select gender,sum(income) as total from country group by gender
+
+3.3 
+
+3.4
+select cob,sum(income)/count(*) as PCI from country group by cob
+
+3.5
+select gender,sum(income)/count(*) as PCI from country group by gender
+
+select citizen,count(citizen) from country group by citizen
+
+select count(citizen) from country where works>0 and citizen=' Native- Born in the United States' 
+
+select ((select count(gender) from country where gender=' Male')/2000)*100 as avgv from country 
+

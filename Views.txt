@@ -1,0 +1,41 @@
+
+select * from A
+create view mycity as select * from A where city='hyd'
+
+select * from mycity
+
+create view "best marks" as select * from A where marks>=50
+
+select * from "best marks"
+
+select * from B where city in ('hyd','pune')
+
+select * from B
+
+create view  marks as select * from A where marks>=60
+
+create view mynames as select * from A s join B c on s.marks=c.marks
+
+create view myorders as select s.sname,sum(amt) as sum from  sales s join customer c on s.snum=c.snum join orders o on c.cnum=o.cnum group by s.sname having sum(amt)>(select max(amt) from orders)
+
+select * from myorders
+
+create view "marks list" as select * from A where marks>=60
+
+select * from "marks list"
+
+update B set marks=76 where name='Sailesh'
+
+create view list as select * from B where marks>=60
+
+update B set marks=86 where name='Unknown'
+
+select * from list
+
+update B set marks=56 where name='Unknown'
+
+drop view list
+
+drop view marks
+
+drop view "marks list"

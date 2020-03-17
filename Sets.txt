@@ -1,0 +1,21 @@
+select * from system union all select * from newtable
+
+select * from system union select * from newtable
+
+select * from system intersect select * from newtable
+
+select * from newtable except select * from system
+
+select * from B intersect select * from newtable
+
+select * from system except select * from newtable union select * from B union select * from system except select * from system intersect select * from B
+
+select  * from newtable except (select  * from system union select  * from B ) union (select  * from newtable except (select  * from newtable union select  * from B))
+
+select * from system intersect select  * from newtable intersect select  * from B
+
+select * from system except (select  * from newtable union select  * from B)
+
+select * from newtable except (select  * from system union select  * from B)
+
+((select * from system intersect select * from B) union (select * from newtable intersect select * from B)) except (select * from system intersect select * from newtable intersect select * from B)

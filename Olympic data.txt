@@ -1,0 +1,10 @@
+select * from Table_1
+select country,sum(G) as t from Table_1 group by country order by t
+select year,sum(total) as t from Table_1 group by year
+select * from Table_1 order by name desc
+select country,count(*) from Table_1 group by country 
+select year,sum(total) as t from Table_1 group by year order by t
+select year,avg(total) as average from Table_1 where sport='swimming' group by year
+select country,year,sum(total) as medals from Table_1 group by year,country order by year
+select year,sum(total) as highest from Table_1 group by year having sum(total)>=30 
+select year,count(*) from Table_1 where year between 2002 and 2012 group by year

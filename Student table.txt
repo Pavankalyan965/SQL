@@ -1,0 +1,38 @@
+select * from system
+select city,count(*) as t from system group by city having count(name)<=3
+select city,avg(marks) as "best city" from system group by city order by city desc
+select * from system where name not like'S%'
+select * from system where name like '_av%'
+select * from system where name like 's_m%'
+select * from system where name like '%a%'
+select * from system where name not like '[s,n]%'
+
+alter table system add email varchar(20)
+insert into system values('pavan',22,'knl')
+update system set marks=marks-5 where marks between 50 and 85 and city='hyd' and gender='male' or gender='female' and marks between 50 and 85 and city='pune' and gender='male'
+create table stud(name varchar(50) primary key, age int not null, city varchar(20),email varchar(30) unique)
+select * from system
+update system set email='pavan6499@gmail.com' where name='pavan' and city='hyd'
+delete from system where email='pavan6499@gmail.com'
+insert into system values('pavan',66,'hyd','male','pavan6499@gmail.com')
+select * from stu
+insert into stu values('ramesh',22,'hyd')
+update stu set age='23' where name='ramesh'
+truncate table stu 
+delete from stu
+insert into stu values('ramesh',22,'hyd')
+insert into stu values('pavan',22,'knl')
+delete from stu where age='22' and name='ramesh'
+
+insert into stu values('karthik',null,'hyd')
+insert into stu values('ramesh' primary key,23,'pune')
+select * from stud
+insert into stud values('karthik',22,'hyd','chary123@gmail.com')
+insert into stud values('pavan',22,'pune','pavan123@gmail.com')
+
+insert into stud values('ramesh',23,'bglr','ramesh123@gmail.com')
+update stud set city='null' where name='pavan'
+truncate table stud
+drop table stud
+drop table stu
+select * from stu

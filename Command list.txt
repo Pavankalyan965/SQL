@@ -1,0 +1,126 @@
+COMMANDS:
+
+Date functions
+String functions
+Math functions 
+Ranking functions
+
+create
+insert
+update
+retrieve-*
+delete
+truncate
+drop table
+alter
+group by 
+order by
+primary key
+foreign key
+not null
+unique
+month(date),day(date),year(date)
+like, not like 
+row_number() over(order by name)
+rank() over(order by marks)
+dense_rank()
+between, not between
+is null, is not null
+sum(),avg(),max(),min(),count()
+<,<=,>,>=,=,!=
+where
+having
+union
+union all
+intersect
+except
+in- where name in[]
+not in
+join
+upper(name)
+lower(city)
+substring(name,1,4), substring(name,len(name)-2,len(name))
+len(name)
+floor(amt)
+ceiling(amt) 
+round(amt)
+distinct
+
+
+select * from system where city in ('hyd','pune')
+
+select distinct city from system
+
+select upper(city) from system
+
+select city,len(city) from system 
+
+select substring(name,2,7) from system
+
+select upper(substring(name,1,1))+lower(substring(name,2,len(name)))+' city is ' + city + 'and gender is ' + gender as infor from system 
+
+select *,row_number() over(order by marks) from system
+
+select marks,rank() over(order by marks) from newtable
+
+select marks,dense_rank() over(order by marks) from newtable
+
+select *,row_number() over(order by marks) as "row number" from system 
+
+select round(amt,1) from orders
+elect o.odate,o.onum,o.amt,s.city,s.sname,max(o.amt) as max from  sales s join customer c on s.snum=c.snum join orders o on c.cnum=o.cnum group by o.odate,o.onum,o.amt,s.city,s.sname
+select * from system
+select name,marks from system
+select lower(name) from system
+select distinct city from system
+select substring(name,0,4),SUBSTRING(city,0,4) from system
+select name,substring(name,3,6) from system
+
+select name,substring(name,4,7) from system
+select name,len(name) from system
+select name,upper(name) as upper,lower(name) as lower,len(name) as length ,substring(name,len(name)-2,len(name)) as four from system
+select name+' '+'city is '+' '+ city as info from system
+select upper(name)+'city is '+city+ 'and gender is ' +gender as info from system
+
+select upper(name,1,2)+lower(substring(name,1,len(name)))+'city is ' + city + 'and gender is ' + gender as info from system
+
+select upper(substring(name,1,1))+lower(substring(name,2,len(name)))+' ' + 'city is ' + city + ' and gender is ' + gender as info from system
+
+select * from orders
+select year(odate) as year,month(odate) as month,day(odate) as date,odate from orders
+select comm from sales
+select * from orders
+select amt from orders
+select amt,floor(amt) as floor from orders 
+select amt,round(amt,1) as round from orders
+
+select amt,ceiling(amt) as ceiling from orders
+
+select row_number(),* from system
+
+select *,row_number() over(order by marks) as "row number" from A
+
+1. select distinct (select count(*) as native from country where age>60 and citizen=' Native- Born in the United States'),(select count(*) as foreigner from country where age>60 and citizen!=' Native- Born in the United States') from country
+
+2. select distinct (((select count(*) from country where  citizen!=' Native- Born in the United States' and works>0)*100)/(select count(*) from country where works>0)) from country
+
+3. select sum(income) as income from country where citizen!=' Native- Born in the United States'
+
+4. select edu,max(income) as topp,min(income) as low from country group by edu 
+
+5.select edu,count(*) from country where age>23 group by edu order by edu 
+
+select distinct 'kids'= (select count(age) as a from country where age between 1 and 10),
+'teenagers'=(select count(age)  from country where age between 11 and 20), 
+'youth'=(select count(age)  from country where age between 21 and 35),
+'adults'=(select count(age) from country where age between 36 and 50), 
+'senior_citizens' =(select count(age) from country where age between 51 and 70) 
+ from country
+
+select count(cob) as citizens,count(cob) as nc from country where age>60 and cob=' United-States'  age>60 and cob!=' United-States'
+
+select count(*) from country where ((select count(citizen) from country where works>0 and citizen!=' Native- Born in the United States')*100/(select count(*) from country where works>0))
+
+select distinct ((select count(citizen) from country where works>0 and citizen!=' Native- Born in the United States')*100/(select count(*) from country where works>0)) as k
+
+
